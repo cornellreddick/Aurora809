@@ -3,10 +3,15 @@
 const cartBtn = document.querySelector(".cart-btn");
 const cartDOM = document.querySelector(".topcart");
 const cartPR = document.querySelector(".header-xtra pull-right");
-const cartItem = document.querySelector(".ci-item");
+const cartItem = document.querySelector(".cart-items");
 const cartTotal = document.querySelector(".ci-total");
-const cartInfo = document.querySelector(".ci-info");
-const productsDOM = document.querySelector(".product-carousel3");
+const cartInfo = document.querySelector(".cart-info");
+const productsDOM = document.querySelector(".product-content");
+
+// cart
+let cart = [];
+//buttons
+let butonsDOM = [];
 
 //getting all products
 class Products {
@@ -43,12 +48,12 @@ class UI {
                                         } class="img-responsive" alt="" />
                                         <div class="overlay-rmore fa fa-search quickview" data-toggle="modal"
                                             data-target="#myModal"></div>
-                                        <div class="product-overlay" data-id=${
-                                          product.id
-                                        }>
-                                            <a href="#" class="addcart fa fa-shopping-cart"></a>
-                                            <a href="#" class="compare fa fa-signal"></a>
-                                            <a href="#" class="likeitem fa fa-heart-o"></a>
+                                        <div class="product-overlay">
+                                            <button class="addcart" data-id=${
+                                              product.id
+                                            }> 
+                                            <i class="fas fa-shopping-cart"></i>
+                                            </button>
                                         </div>
                                     </div>
                                     <div class="product-info">
@@ -72,15 +77,108 @@ class UI {
     });
     productsDOM.innerHTML = result;
   }
+  getAddButtons() {
+    const buttons = [...document.querySelectorAll(".addcart")];
+    buttons.forEach(button => {
+      let id = button.dataset.id;
+      let inCart = cart.find(item => item.id === id);
+      if (inCart) {
+        button.innerHTML = "In Cart";
+        button.disable = true;
+      }
+      button.addEventListener("click", event => {
+        event.target.innerText = "In Cart";
+        event.target.disable = true;
+        // get product from products
+        let cartItem = { ...Storage.getProduct(id), amount: 1 };
+        // add product to the cart
+        cart = [...cart, cartItem];
+        // save the cart in local Storage
+        Storage.saveCart(cart);
+        // set the value in the cart
+        this.setCartValues(cart);
+        // add cart item
+        this.addCartItem(cartItem);
+        // show the cart
+        //this.showCart();
+      });
+    });
+  }
+
+  setCartValues(cart) {
+    let tempTotal = 0;
+    let itemsTotal = 0;
+    cart.map(item => {
+      tempTotal += item.price * item.amount;
+      itemsTotal += item.amount;
+    });
+    cartTotal.innerText = parseFloat(tempTotal.toFixed(2));
+    cartItem.innerText = itemsTotal;
+  }
+  addCartItem(item) {
+    const div = document.createElement("div");
+    div.classList.add("ci-item");
+    div.innerHTML = `
+    <img src=${item.image} width="80" alt="" />
+                                            <div class="ci-item-info">
+                                                <h5><a>${item.title}</a></h5>
+                                                <p>$${item.price}</p>
+                                                <div>
+                                                    <i class="fas fa-chevron-up" data-id=${
+                                                      item.id
+                                                    }></i>
+                                                    <p class="ci-amount">${
+                                                      item.amount
+                                                    }</p>
+                                                    <i class="fas fa-chevron-down" data-id=${
+                                                      item.id
+                                                    }></i>
+                                                </div>
+                                                <div class="ci-edit">
+                                                    <a href="#" class="edit fa fa-edit"></a>
+                                                    <a href="#" class="edit fa fa-trash" data-id=${
+                                                      item.id
+                                                    }></a>
+                                                </div>
+                                            </div>
+                                            
+    `;
+
+    cartInfo.appendChild(div);
+  }
+
+  // showCart(){
+
+  // }
 }
 
 //local storage
-class Storage {}
+class Storage {
+  static saveProducts(products) {
+    localStorage.setItem("products", JSON.stringify(products)); //using local storage on the browser.
+  }
+  static getProduct(id) {
+    let products = JSON.parse(localStorage.getItem("products"));
+    return products.find(product => product.id === id);
+  }
+
+  static saveCart(cart) {
+    localStorage.setItem("cart", JSON.stringify(cart));
+  }
+}
 
 document.addEventListener("DOMContentLoaded", () => {
   const ui = new UI();
   const products = new Products();
 
   // get all products
-  products.getProducts().then(products => ui.displayProducts(products));
+  products
+    .getProducts()
+    .then(products => {
+      ui.displayProducts(products);
+      Storage.saveProducts(products); //setting all of the values to the local storage.
+    })
+    .then(() => {
+      ui.getAddButtons(); //this is an extention using the then to get the add butons.
+    });
 });
