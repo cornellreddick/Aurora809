@@ -5,7 +5,7 @@ const cartDOM = document.querySelector(".topcart");
 const cartPR = document.querySelector(".header-xtra pull-right");
 const cartItem = document.querySelector(".cart-items");
 const cartTotal = document.querySelector(".ci-total");
-const cartInfo = document.querySelector(".cart-info");
+const cartInfo = document.querySelector(".ci-item-info");
 const productsDOM = document.querySelector(".product-content");
 
 // cart
@@ -71,7 +71,7 @@ class UI {
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                       
                   
       `;
     });
