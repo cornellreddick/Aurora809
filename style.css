@@ -94,7 +94,7 @@ a:hover {
 
 .top_bar {
     height: 44px;
-    background: #a9657f;
+    background: #1e1e1e;
     border-top: 1px solid #2f2e2a;
     position: relative;
     z-index: 9000;
@@ -1675,8 +1675,8 @@ footer {
     position: absolute;
     left: 0;
     margin-top: 30px;
-    /* opacity: 0;
-    visibility: hidden; */
+    opacity: 0;
+    visibility: hidden;
     transition: .4s;
     z-index: 9000;
     height: 465px;
@@ -5508,6 +5508,9 @@ a.pp_arrow_next {
   color: var(--primaryColor);
   cursor: pointer;
 }
-
+.remove-item {
+  color: grey;
+  cursor: pointer;
+}
 
 		
