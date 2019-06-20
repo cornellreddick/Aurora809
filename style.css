@@ -244,6 +244,11 @@ header {
     position: relative;
     overflow: hidden;
     cursor: pointer;
+      display: grid;
+  align-items: center;
+  grid-template-columns: auto 1fr auto;
+  grid-column-gap: 1.5rem;
+  margin: 1.5rem 0;
 }
 
 .block-content.margin-less {
@@ -511,11 +516,19 @@ h5.heading2 span {
   letter-spacing: var(--mainSpacing);
 }
 .item-amount {
-  text-align: center;
+  text-align: right;
 }
 .remove-item {
-  color: grey;
-  cursor: pointer;
+  background: #d6644a;
+    font-size: 11px;
+    color: #fff;
+    text-transform: none;
+    height: 33px;
+    padding: 0 8px;
+    line-height: 33px;
+    display: inline-block;
+    border-radius: 2px;
+    font-weight: 700;
 }
 .fa-chevron-up,
 .fa-chevron-down {
@@ -1796,6 +1809,19 @@ footer {
 
 
 .cart-btn a {
+    background: #d6644a;
+    font-size: 11px;
+    color: #fff;
+    text-transform: none;
+    height: 33px;
+    padding: 0 8px;
+    line-height: 33px;
+    display: inline-block;
+    border-radius: 2px;
+    font-weight: 700;
+}
+
+.cart-btn button {
     background: #d6644a;
     font-size: 11px;
     color: #fff;
@@ -3970,7 +3996,7 @@ footer {
 /* 18. NEWSLETTER */
 
 #popup-newsletter {
-    background: transparent url("../images/ns-bg.png") no-repeat top right;
+    background: transparent url("../images/TG.png") no-repeat top right;
     background-size: cover;
     display: table;
     width: 100%;
@@ -5509,7 +5535,7 @@ a.pp_arrow_next {
   cursor: pointer;
 }
 .remove-item {
-  color: grey;
+  color: white;
   cursor: pointer;
 }
 
